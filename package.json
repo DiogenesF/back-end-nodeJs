@@ -8,5 +8,8 @@
     "start": "node index"
   },
   "author": "Diogenes Fiorezi",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
