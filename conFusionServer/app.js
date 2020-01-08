@@ -8,6 +8,14 @@ var FileStore = require("session-file-store")(session);
 var passport = require("passport");
 var authenticate = require("./authenticate");
 var config = require("./config");
+const mongoose = require("mongoose");
+const url = config.mongoUrl;
+const connect = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('useCreateIndex', true);
+connect.then((db) => {
+  console.log("Connected correctly to server");
+}, (err) => { console.log(err); })
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,19 +23,12 @@ var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 
-const mongoose = require("mongoose");
 
 const Dishes = require("./model/dishes");
 const Promotions = require("./model/promotions");
 const Leaders = require("./model/leaders");
 
-const url = config.mongoUrl;
-const connect = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set('useCreateIndex', true);
 
-connect.then((db) => {
-  console.log("Connected correctly to server");
-}, (err) => { console.log(err); })
 
 var app = express();
 
