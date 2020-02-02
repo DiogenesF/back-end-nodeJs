@@ -12,26 +12,39 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 exports.getToken = function(user) {
-    return jwt.sign(user, config.secretKey, {expiresIn: 3600});
+  return jwt.sign(user, config.secretKey, { expiresIn: 3600 });
 };
 
 var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = config.secretKey;
 
-exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+exports.jwtPassport = passport.use(
+  new JwtStrategy(opts, (jwt_payload, done) => {
     console.log("JWT payload: ", jwt_payload);
-    User.findOne({_id: jwt_payload._id}, (err,user) => {
-        if (err) {
-            return done(err,false);
-        }
-        else if (user) {
-            return done(null, user);
-        }
-        else {
-            return done(null, false);
-        }
+    User.findOne({ _id: jwt_payload._id }, (err, user) => {
+      if (err) {
+        return done(err, false);
+      } else if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
     });
-}));
+  })
+);
 
-exports.verifyUser = passport.authenticate("jwt", {session: false})
+exports.verifyUser = passport.authenticate("jwt", { session: false });
+
+exports.verifyAdmin = (req, res, next) => {
+  var isAdmin = req.user.admin;
+  if (!isAdmin) {
+    var err = new Error("You are not authorized to perform this operation!");
+    res.setHeader("WWW-Authenticate", "Basic");
+    err.status = 403;
+    next(err);
+    return;
+  } else {
+    next();
+  }
+};
