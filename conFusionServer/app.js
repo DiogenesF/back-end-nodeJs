@@ -10,6 +10,7 @@ var authenticate = require("./authenticate");
 var config = require("./config");
 const mongoose = require("mongoose");
 const url = config.mongoUrl;
+const cors = require("cors");
 const connect = mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -57,6 +58,7 @@ app.set("view engine", "jade");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 //app.use(cookieParser("12345-67890-09876-54321"));
 
 app.use(passport.initialize());

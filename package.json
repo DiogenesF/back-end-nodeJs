@@ -12,10 +12,11 @@
   "dependencies": {
     "assert": "^2.0.0",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongodb": "^3.4.1",
-    "mongoose": "^5.8.5",
-    "morgan": "^1.9.1",
-    "nodemon": "^2.0.2"
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.16",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4"
   }
 }
